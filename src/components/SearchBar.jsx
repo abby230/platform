@@ -1,37 +1,51 @@
-import React from 'react';
+// src/components/SearchBar.jsx
+
+import React, { useState } from 'react';
 
 export default function SearchBar({ onSearch }) {
+  const [location, setLocation] = useState('');
+  const [checkIn, setCheckIn]     = useState('');
+  const [checkOut, setCheckOut]   = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // onSearch 에 체크인·체크아웃 날짜도 넘겨줄 수 있도록
+    onSearch(location, checkIn, checkOut);
+  };
+
   return (
     <form
-      onSubmit={e => {
-        e.preventDefault();
-        const { loc, checkIn, checkOut } = e.target;
-        onSearch({
-          location: loc.value,
-          checkIn: checkIn.value,
-          checkOut: checkOut.value,
-        });
-      }}
-      className="flex items-center bg-white p-2 rounded-full shadow-md max-w-4xl mx-auto"
+      onSubmit={handleSubmit}
+      className="flex flex-wrap items-center bg-white rounded-full shadow px-4 py-2 space-x-2"
     >
+      {/* 위치 입력 */}
       <input
-        name="loc"
+        type="text"
         placeholder="Location"
-        className="flex-1 px-4 py-2 rounded-l-full border border-r-0 border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+        className="flex-1 min-w-[150px] outline-none px-3 py-2 rounded-full"
       />
+
+      {/* 체크인 날짜 */}
       <input
-        name="checkIn"
         type="date"
-        className="px-4 py-2 border-t border-b border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        value={checkIn}
+        onChange={(e) => setCheckIn(e.target.value)}
+        className="px-3 py-2 rounded-full border border-gray-200"
       />
+
+      {/* 체크아웃 날짜 */}
       <input
-        name="checkOut"
         type="date"
-        className="px-4 py-2 border border-l-0 border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        value={checkOut}
+        onChange={(e) => setCheckOut(e.target.value)}
+        className="px-3 py-2 rounded-full border border-gray-200"
       />
+
       <button
         type="submit"
-        className="px-6 py-2 bg-blue-600 text-white rounded-r-full hover:bg-blue-700 transition-colors"
+        className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition"
       >
         Search
       </button>
